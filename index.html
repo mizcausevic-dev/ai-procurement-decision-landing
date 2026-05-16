@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Procurement Decision Card — what did your buyer actually decide?</title>
+  <meta name="description" content="An open JSON specification for the buyer-side artifact in AI procurement. Districts, hospitals, and agencies publish their review decisions in a machine-readable format that cites vendor declarations by URL and content hash." />
+  <meta name="theme-color" content="#4f46e5" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AI Procurement Decision Card — the buyer-side artifact" />
+  <meta property="og:description" content="Open JSON spec for AI procurement decisions. Publish your review at a well-known URL, cite vendor documents by hash, attach conditions, support appeals. The eleventh spec of the Kinetic Gain Protocol Suite." />
+  <meta property="og:url" content="https://decisions.kineticgain.com/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="/" class="brand" aria-label="AI Procurement Decision Card home">
+        <span class="brand-mark" aria-hidden="true">⚖</span>
+        <span class="brand-text">
+          <strong>AI Procurement Decision Card</strong>
+          <small>Kinetic Gain Protocol Suite · Buyer-side · Cross-cutting</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#why">Why</a>
+        <a href="#spec">Spec</a>
+        <a href="#example">Example</a>
+        <a href="#tooling">Tooling</a>
+        <a class="cta" href="https://github.com/mizcausevic-dev/ai-procurement-decision-spec" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="pill">Spec #11 · Cross-cutting · v0.1 draft</span>
+        <h1>What did your buyer actually decide?</h1>
+        <p class="lede">
+          The first ten Kinetic Gain Protocol Suite specs cover <strong>vendor declarations</strong> — what an AI
+          system claims about itself. The <strong>AI Procurement Decision Card</strong> closes the loop with
+          the <strong>buyer-side artifact</strong>: a school district, a hospital, or a federal agency
+          publishes its review outcome at a well-known URL, citing the vendor documents reviewed (by URL +
+          content hash), the rubric used, conditions attached, and the appeals pathway. The decision finally
+          enters the same machine-readable graph as the vendor's declaration.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="https://github.com/mizcausevic-dev/ai-procurement-decision-spec" target="_blank" rel="noreferrer">Read the spec</a>
+          <a class="btn btn-secondary" href="https://mizcausevic-dev.github.io/kinetic-gain-visualizer/?view=editor" target="_blank" rel="noreferrer">Try the visualizer</a>
+        </div>
+        <ul class="hero-bullets">
+          <li><span class="dot dot-indigo"></span> <strong>Cites vendor docs by URL + content_hash</strong> — drift is detectable, decisions are auditable</li>
+          <li><span class="dot dot-indigo"></span> <strong>Seven terminal statuses</strong> — approved · approved-with-conditions · rejected · rejected-with-remediation · pending · withdrawn · expired</li>
+          <li><span class="dot dot-indigo"></span> Served at <code>/.well-known/decisions/&lt;decision_id&gt;.json</code></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="why" class="block">
+      <div class="block-inner">
+        <h2>Why a Decision Card?</h2>
+        <p class="prose">
+          Today, a district that vets an EdTech AI tool, a hospital that evaluates a clinical AI tool, and a
+          federal agency that adds a vendor to an Approved Vendor List record their decisions in
+          procurement-office filing cabinets. The vendor publishes a machine-readable disclosure; the buyer's
+          response is unstructured prose, scattered across PDFs and inboxes. The Decision Card fixes that.
+          Outcomes become first-class documents in the Suite graph — searchable, verifiable,
+          cross-referenced against the vendor declarations they cite.
+        </p>
+        <div class="grid grid-3">
+          <article class="card">
+            <h3>The buyer is named</h3>
+            <p>The <code>buyer</code> block declares the organization that conducted the review — a school district, a hospital, a federal agency. Decisions are attributable, not anonymous.</p>
+          </article>
+          <article class="card">
+            <h3>Subject is hash-bound</h3>
+            <p>The <code>subject.documents_reviewed[]</code> array cites every vendor document by URL plus <code>content_hash</code>. If the vendor's AEO or Clinical AI Card changes after the decision, drift is detectable.</p>
+          </article>
+          <article class="card">
+            <h3>Conditions are machine-readable</h3>
+            <p>Approval-with-conditions and rejection-with-remediation use the same <code>conditions[]</code> array. Each carries an ID, type, owner, deadline, and verification URI. They feed straight into runtime policy gates.</p>
+          </article>
+          <article class="card">
+            <h3>Appeals are first-class</h3>
+            <p>Rejected vendors get a structured <code>appeals</code> block with deadline + process URL. Buyers MUST honor the deadline; vendors MUST be able to point to it.</p>
+          </article>
+          <article class="card">
+            <h3>History is append-only</h3>
+            <p>State transitions accumulate in <code>history[]</code> — pending → approved-with-conditions → withdrawn. Auditors replay the chain instead of asking what happened.</p>
+          </article>
+          <article class="card">
+            <h3>Signatures optional, expected</h3>
+            <p>For non-repudiation, decisions carry ed25519 signatures over the canonical-JSON hash — same convention as <a href="https://github.com/mizcausevic-dev/hash-attestation-rs" target="_blank" rel="noreferrer">hash-attestation-rs</a>. "This decision actually came from this buyer."</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="spec" class="block block-tinted">
+      <div class="block-inner">
+        <h2>Document structure</h2>
+        <p class="prose">
+          Six fields are required: <code>decision_card_version</code>, <code>decision_id</code>,
+          <code>issued_at</code>, <code>buyer</code>, <code>decision</code>, <code>subject</code>, and
+          <code>rationale</code>. Everything else is optional but recommended.
+        </p>
+        <pre class="codeblock"><code>{
+  "decision_card_version": "0.1",
+  "decision_id": "SPRINGFIELD-DEC-2026-001",
+  "issued_at": "2026-05-14T19:00:00Z",
+
+  "buyer":          { ... who is the buyer ... },
+  "decision_maker": { ... role of the deciding party, optional ... },
+  "decision":       { "status": "approved-with-conditions", ... },
+  "subject":        { ... what vendor + documents were reviewed ... },
+  "criteria":       { ... policies and rubric used ... },
+  "conditions":     [ ... attached conditions, if any ... ],
+  "rationale":      "Free-form prose explaining the decision.",
+  "history":        [ ... audit trail of state transitions ... ],
+  "appeals":        { ... appeal deadline + process URL ... },
+  "publication":    { ... publication URL + visibility ... },
+  "signatures":     [ ... non-repudiation signatures ... ],
+  "withdrawal":     { ... only present if status=withdrawn ... }
+}</code></pre>
+
+        <h3 class="sub">Decision statuses</h3>
+        <div class="table-wrap">
+          <table class="status-table">
+            <thead>
+              <tr><th>Status</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>approved</code></td><td>Use is approved, no conditions attached.</td></tr>
+              <tr><td><code>approved-with-conditions</code></td><td>Use is approved subject to the listed <code>conditions</code>.</td></tr>
+              <tr><td><code>rejected</code></td><td>Use is declined. No remediation pathway offered.</td></tr>
+              <tr><td><code>rejected-with-remediation</code></td><td>Use is declined; <code>conditions</code> describe what would change the answer.</td></tr>
+              <tr><td><code>pending</code></td><td>Review is in progress; no terminal decision yet.</td></tr>
+              <tr><td><code>withdrawn</code></td><td>A previous decision is revoked; <code>withdrawal</code> block explains.</td></tr>
+              <tr><td><code>expired</code></td><td>The decision's <code>effective_until</code> date has passed.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="example" class="block">
+      <div class="block-inner">
+        <h2>Canonical example fixtures</h2>
+        <p class="prose">
+          Three example Decision Cards ship with the spec, one per regulated vertical. All three validate
+          against <code>decision-card.schema.json</code> on every CI run.
+        </p>
+        <div class="grid grid-3">
+          <article class="card example-card">
+            <span class="vertical-tag tag-edu">EdTech · K-12 district</span>
+            <h3><code>district-edtech-approved-conditions.json</code></h3>
+            <p>Approved-with-conditions on an AI tutor — three contractual, audit, and technical conditions. Cites the vendor's Tutor Card, AEO, and Agent Card by hash; references the district's published Classroom AI AUP as <code>criteria.policy_uris</code>.</p>
+          </article>
+          <article class="card example-card">
+            <span class="vertical-tag tag-health">HealthTech · Hospital</span>
+            <h3><code>hospital-clinical-rejected.json</code></h3>
+            <p>Rejected-with-remediation. The vendor's FDA 510(k) clearance scope doesn't match the proposed deployment, and the bias audit's measurement cohort lacks the hospital's predominant patient population. <code>conditions</code> describe what would change the answer.</p>
+          </article>
+          <article class="card example-card">
+            <span class="vertical-tag tag-gov">Federal · Civilian agency</span>
+            <h3><code>federal-agency-approved.json</code></h3>
+            <p>Approved for non-rights-impacting use per <strong>OMB M-24-10</strong> + the <strong>NIST AI Risk Management Framework</strong> rubric. Demonstrates the criteria.policy_uris pattern for executive-order-driven procurement.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="composability" class="block block-tinted">
+      <div class="block-inner">
+        <h2>Composes with the rest of the Suite</h2>
+        <p class="prose">
+          A Decision Card references vendor documents via <code>subject.documents_reviewed[].url</code>.
+          Suite tooling treats it as a first-class node in the same graph as every vendor declaration:
+        </p>
+        <ul class="capability-list">
+          <li><strong>Resolve</strong> the referenced vendor documents at their well-known URLs and re-validate them at decision time.</li>
+          <li><strong>Verify</strong> the <code>content_hash</code> to detect document drift <em>after</em> the decision was issued.</li>
+          <li><strong>Aggregate</strong> multiple Decision Cards about the same vendor (e.g. <em>"what percentage of K-12 districts approved AcmeTutor under their AUPs?"</em>).</li>
+          <li><strong>Cross-check</strong> a Decision Card's <code>criteria.rubric</code> against the buyer's own published Classroom AI AUP via <code>criteria.policy_uris</code>.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="tooling" class="block">
+      <div class="block-inner">
+        <h2>The Decision Intelligence stack</h2>
+        <p class="prose">
+          Two production-shaped reference implementations consume Decision Cards directly. A third — the unified
+          MCP server — exposes them to Claude through a single config entry.
+        </p>
+        <div class="grid grid-2">
+          <article class="card tooling-card">
+            <h3><a href="https://github.com/mizcausevic-dev/procurement-decision-api" target="_blank" rel="noreferrer">procurement-decision-api ↗</a></h3>
+            <p><strong>Python · FastAPI · Pydantic v2.</strong> The first cross-ecosystem bridge in the portfolio. Drafts Decision Cards from a buyer rubric + the vendor's Suite documents (AEO + agent-card + tool-card + ai-evidence + clinical / tutor / AUP as applicable). NIST AI RMF crosswalk linked from the OpenAPI spec.</p>
+          </article>
+          <article class="card tooling-card">
+            <h3><a href="https://github.com/mizcausevic-dev/policy-as-code-engine" target="_blank" rel="noreferrer">policy-as-code-engine ↗</a></h3>
+            <p><strong>Python · FastAPI.</strong> Companion to procurement-decision-api. Headline: <code>POST /bundles/from-decision-card</code> turns a Decision Card's <code>conditions[]</code> into a runtime-enforceable PolicyBundle. Closes the loop from "buyer signed off" to "request gated."</p>
+          </article>
+          <article class="card tooling-card">
+            <h3><a href="https://github.com/mizcausevic-dev/incident-correlation-rs" target="_blank" rel="noreferrer">incident-correlation-rs ↗</a></h3>
+            <p><strong>Rust · petgraph.</strong> Walks the Suite graph from an AI Incident Card and emits a structured remediation plan. <code>DecisionCard</code> → <code>RecheckPolicy</code>: when an incident references a previously-approved vendor, the engine flags the relevant decisions for re-review.</p>
+          </article>
+          <article class="card tooling-card">
+            <h3><a href="https://github.com/mizcausevic-dev/mcp-decision-intelligence" target="_blank" rel="noreferrer">mcp-decision-intelligence ↗</a></h3>
+            <p><strong>Python · MCP server.</strong> Four tools — <code>validate_decision_card</code>, <code>preview_policy_bundle</code>, <code>plan_incident_remediation</code>, <code>check_contract_compatibility</code>. Read-only deterministic preview of what the rest of the stack would do, no LLM-in-the-loop reasoning.</p>
+          </article>
+          <article class="card tooling-card">
+            <h3><a href="https://validator.kineticgain.com/" target="_blank" rel="noreferrer">validator.kineticgain.com ↗</a></h3>
+            <p><strong>Hosted validator.</strong> Paste any Decision Card JSON, get inline validation against the schema. Auto-detects the spec via the <code>decision_card_version</code> field — same pattern as the other ten Suite specs.</p>
+          </article>
+          <article class="card tooling-card">
+            <h3><a href="https://github.com/mizcausevic-dev/mcp-kinetic-gain" target="_blank" rel="noreferrer">mcp-kinetic-gain ↗</a></h3>
+            <p><strong>Unified MCP server.</strong> Exposes the Decision Card alongside all 10 other Suite specs as MCP tools. Headline relevant tool: <code>decision_card_validate</code> enforces the full conditional ruleset (e.g. "if status is approved-with-conditions, conditions[] MUST be non-empty").</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-strip">
+      <div class="cta-strip-inner">
+        <h2>The eleventh spec closes the loop.</h2>
+        <p>Vendors declare. Buyers decide. The graph is complete.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/mizcausevic-dev/ai-procurement-decision-spec" target="_blank" rel="noreferrer">Read the spec on GitHub</a>
+          <a class="btn btn-secondary" href="https://suite.kineticgain.com/" target="_blank" rel="noreferrer">See the full Suite</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-inner">
+      <div class="foot-col">
+        <strong>AI Procurement Decision Card</strong>
+        <p>Spec #11 of the Kinetic Gain Protocol Suite. v0.1 draft.<br />MIT-licensed specification; reference implementations under AGPL-3.0.</p>
+      </div>
+      <div class="foot-col">
+        <strong>Suite</strong>
+        <ul>
+          <li><a href="https://suite.kineticgain.com/">suite.kineticgain.com</a> — Suite hub</li>
+          <li><a href="https://docs.kineticgain.com/">docs.kineticgain.com</a> — Quickstart hub</li>
+          <li><a href="https://walker.kineticgain.com/">walker.kineticgain.com</a> — well-known walker</li>
+          <li><a href="https://validator.kineticgain.com/">validator.kineticgain.com</a> — hosted validator</li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <strong>Author</strong>
+        <p><a href="https://kineticgain.com/">Kinetic Gain LLC</a> · <a href="https://github.com/mizcausevic-dev">github.com/mizcausevic-dev</a></p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
