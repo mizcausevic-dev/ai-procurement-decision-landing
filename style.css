@@ -514,3 +514,58 @@ h2 {
 .foot-col li { margin-bottom: 0.3rem; }
 .foot-col a { color: var(--slate-600); }
 .foot-col a:hover { color: var(--indigo-700); }
+
+/* === Suite dark theme (house look) === */
+html, body { color: #e2e8f0; background: #070b16; }
+a { color: var(--indigo-400); }
+a:hover { color: var(--indigo-400); }
+code { background: var(--slate-800); color: var(--slate-200); }
+
+.nav { background: rgba(7, 11, 22, 0.85); border-bottom-color: var(--slate-800); }
+.brand { color: #f8fafc; }
+.brand-mark { background: var(--slate-800); color: var(--indigo-400); }
+.nav-links a { color: var(--slate-400); }
+.nav-links a:hover { color: #f8fafc; }
+.nav-links .cta { background: var(--indigo-600); color: #fff !important; }
+.nav-links .cta:hover { background: var(--indigo-500); }
+
+.hero { background: linear-gradient(180deg, #070b16 0%, #0b1326 100%); border-bottom-color: var(--slate-800); }
+.pill { background: rgba(255, 255, 255, 0.04); border-color: var(--slate-700); color: var(--indigo-400); }
+.hero h1 { color: #f8fafc; }
+.lede { color: var(--slate-400); }
+.btn-primary { background: var(--indigo-600); color: #fff; }
+.btn-primary:hover { background: var(--indigo-500); color: #fff; }
+.btn-secondary { background: var(--slate-900); color: var(--slate-200); border-color: var(--slate-700); }
+.btn-secondary:hover { background: var(--slate-800); color: #fff; }
+.hero-bullets { color: var(--slate-400); }
+
+.block-tinted { background: #0b1120; }
+h2 { color: #f8fafc; }
+.prose { color: var(--slate-400); }
+
+.card { background: rgba(15, 23, 42, 0.6); border-color: var(--slate-800); }
+.card h3 { color: #f8fafc; }
+.card p { color: var(--slate-400); }
+
+.numbered li { background: rgba(15, 23, 42, 0.6); border-color: var(--slate-800); color: var(--slate-300); }
+
+.footer { background: #070b16; border-top-color: var(--slate-800); }
+.footer-inner { color: var(--slate-500); }
+.footer-inner a { color: var(--slate-400); }
+.footer-inner a:hover { color: #f8fafc; }
+/* .block-dark / .card-dark / .code-block already dark — left as-is */
+
+/* --- Decision Card landing dark additions --- */
+.sub { color: #f8fafc; }
+.status-table { background: rgba(15, 23, 42, 0.6); border-color: var(--slate-800); }
+.status-table th, .status-table td { border-bottom-color: var(--slate-800); }
+.status-table th { background: rgba(255, 255, 255, 0.03); color: var(--slate-300); }
+.tooling-card h3 a { color: #f8fafc; }
+.tooling-card h3 a:hover { color: var(--indigo-400); }
+.capability-list li { background: rgba(15, 23, 42, 0.6); border-color: var(--slate-800); border-left-color: var(--indigo-500); color: var(--slate-300); }
+.foot { background: #070b16; border-top-color: var(--slate-800); }
+.foot-inner { color: var(--slate-400); }
+.foot-col strong { color: #f8fafc; }
+.foot-col a { color: var(--slate-400); }
+.foot-col a:hover { color: var(--indigo-400); }
+/* .cta-strip indigo gradient + .tag-* pastels intentionally kept (legible on dark) */
