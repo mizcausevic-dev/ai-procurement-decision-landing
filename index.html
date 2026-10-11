@@ -90,15 +90,15 @@
           </article>
           <article class="card">
             <h3>Conditions are machine-readable</h3>
-            <p>Approval-with-conditions and rejection-with-remediation use the same <code>conditions[]</code> array. Each carries an ID, type, owner, deadline, and verification URI. They feed straight into runtime policy gates.</p>
+            <p>Approval-with-conditions and rejection-with-remediation use the same <code>conditions[]</code> array. Each carries an ID, type, owner, deadline, and verification URI. These fields are structured for integration with runtime policy gates; enforcement requires a separately deployed, trusted path.</p>
           </article>
           <article class="card">
             <h3>Appeals are first-class</h3>
             <p>Rejected vendors get a structured <code>appeals</code> block with deadline + process URL. Buyers MUST honor the deadline; vendors MUST be able to point to it.</p>
           </article>
           <article class="card">
-            <h3>History is append-only</h3>
-            <p>State transitions accumulate in <code>history[]</code> — pending → approved-with-conditions → withdrawn. Auditors replay the chain instead of asking what happened.</p>
+            <h3>History records transitions</h3>
+            <p>The <code>history[]</code> array records state transitions — pending → approved-with-conditions → withdrawn. A durable, tamper-evident audit trail requires separate storage and verification controls.</p>
           </article>
           <article class="card">
             <h3>Signatures optional, expected</h3>
