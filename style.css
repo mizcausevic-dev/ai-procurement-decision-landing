@@ -40,8 +40,9 @@ html, body {
 a { color: var(--indigo-700); text-decoration: none; }
 a:hover { color: var(--indigo-800); text-decoration: underline; }
 a:focus-visible {
-  outline: 3px solid #facc15;
-  outline-offset: 3px;
+  outline: 3px solid #0f172a;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 3px #facc15;
   border-radius: 4px;
 }
 
