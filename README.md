@@ -1,6 +1,6 @@
 # ai-procurement-decision-landing
 
-Static landing site for the **[AI Procurement Decision Card spec](https://github.com/mizcausevic-dev/ai-procurement-decision-spec)** — spec #11 (cross-cutting, buyer-side) of the [Kinetic Gain Protocol Suite](https://github.com/mizcausevic-dev/kinetic-gain-protocol-suite).
+Static landing site for the **[AI Procurement Decision Card spec](https://github.com/mizcausevic-dev/ai-procurement-decision-spec)** — a cross-cutting, buyer-side spec in the twelve-spec [Kinetic Gain Protocol Suite](https://github.com/mizcausevic-dev/kinetic-gain-protocol-suite).
 
 Live at **[decisions.kineticgain.com](https://decisions.kineticgain.com)**.
 
@@ -11,7 +11,7 @@ Live at **[decisions.kineticgain.com](https://decisions.kineticgain.com)**.
 ├── index.html              # the landing page
 ├── style.css               # styles (indigo + slate palette)
 ├── .github/workflows/
-│   └── deploy.yml          # FTPS push to /decisions/ on Hostinger on push to main
+│   └── deploy.yml          # manual GitHub Actions upload (currently unverified)
 └── README.md
 ```
 
@@ -26,9 +26,9 @@ python3 -m http.server 8080
 
 ## Deployment
 
-Pushes to `main` trigger a GitHub Actions workflow that FTP-syncs the site root to `/decisions/` on Hostinger.
+Merging to `main` does not deploy. The GitHub Actions upload runs only on `workflow_dispatch`; its FTPS path is unverified. For a release, use the reviewed local Hostinger SSH/SFTP route with a pinned host key, exact file backups and hashes, hosted checks, and a tested restore.
 
-Required repo secrets:
+Secrets required only for the manually dispatched Actions upload:
 
 | Secret | Description |
 |---|---|
@@ -42,12 +42,12 @@ Required repo secrets:
 
 - **[ai-procurement-decision-spec](https://github.com/mizcausevic-dev/ai-procurement-decision-spec)** — the specification, JSON Schema, and three canonical example fixtures (EdTech district, HealthTech hospital, Federal agency)
 - **[procurement-decision-api](https://github.com/mizcausevic-dev/procurement-decision-api)** — FastAPI service that drafts Decision Cards from a buyer rubric + vendor Suite documents
-- **[policy-as-code-engine](https://github.com/mizcausevic-dev/policy-as-code-engine)** — turns a Decision Card's `conditions[]` into a runtime-enforceable PolicyBundle
+- **[policy-as-code-engine](https://github.com/mizcausevic-dev/policy-as-code-engine)** — translates a Decision Card's `conditions[]` into a PolicyBundle; live request gating requires a separately deployed trusted policy path
 - **[incident-correlation-rs](https://github.com/mizcausevic-dev/incident-correlation-rs)** — walks the Suite graph from an AI Incident Card, recommends Decision Card re-reviews
 - **[mcp-decision-intelligence](https://github.com/mizcausevic-dev/mcp-decision-intelligence)** — read-only MCP server, 4 deterministic preview tools
-- **[mcp-kinetic-gain](https://github.com/mizcausevic-dev/mcp-kinetic-gain)** — unified MCP server, every Suite spec as a tool
+- **[mcp-kinetic-gain](https://github.com/mizcausevic-dev/mcp-kinetic-gain)** — v0.10.0 unified MCP server with 75 tools covering twelve Suite specs, DefenseTech checks, and implementation previews
 - **[kinetic-gain-visualizer](https://github.com/mizcausevic-dev/kinetic-gain-visualizer)** — unified visualizer; auto-detects via `decision_card_version`
 
 ## License
 
-Apache-2.0. The underlying specification is MIT-licensed; reference implementations are AGPL-3.0.
+Apache-2.0 for this site. The underlying specification is MIT-licensed; reference implementations carry their own licenses.

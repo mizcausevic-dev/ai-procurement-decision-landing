@@ -16,7 +16,7 @@
 
   <meta property="og:type" content="website" />
   <meta property="og:title" content="AI Procurement Decision Card — the buyer-side artifact" />
-  <meta property="og:description" content="Open JSON spec for AI procurement decisions. Publish your review at a well-known URL, cite vendor documents by hash, attach conditions, support appeals. The eleventh spec of the Kinetic Gain Protocol Suite." />
+  <meta property="og:description" content="Open JSON spec for buyer-side AI procurement decisions. Cite vendor documents by hash, attach conditions, and document appeals as part of the twelve-spec Kinetic Gain Protocol Suite." />
   <meta property="og:url" content="https://decisions.kineticgain.com/" />
 
   <link rel="stylesheet" href="/assets/fonts.css" />
@@ -46,10 +46,10 @@
   <main>
     <section class="hero">
       <div class="hero-inner">
-        <span class="pill">Spec #11 · Cross-cutting · v0.1 draft</span>
+        <span class="pill">Buyer-side spec · Cross-cutting · v0.1 draft</span>
         <h1>What did your buyer actually decide?</h1>
         <p class="lede">
-          The first ten Kinetic Gain Protocol Suite specs cover <strong>vendor declarations</strong> — what an AI
+          Kinetic Gain Protocol Suite documents cover <strong>vendor declarations</strong> — what an AI
           system claims about itself. The <strong>AI Procurement Decision Card</strong> closes the loop with
           the <strong>buyer-side artifact</strong>: a school district, a hospital, or a federal agency
           publishes its review outcome at a well-known URL, citing the vendor documents reviewed (by URL +
@@ -212,7 +212,7 @@
           </article>
           <article class="card tooling-card">
             <h3><a href="https://github.com/mizcausevic-dev/policy-as-code-engine" target="_blank" rel="noreferrer">policy-as-code-engine ↗</a></h3>
-            <p><strong>Python · FastAPI.</strong> Companion to procurement-decision-api. Headline: <code>POST /bundles/from-decision-card</code> turns a Decision Card's <code>conditions[]</code> into a runtime-enforceable PolicyBundle. Closes the loop from "buyer signed off" to "request gated."</p>
+            <p><strong>Python · FastAPI.</strong> Companion to procurement-decision-api. <code>POST /bundles/from-decision-card</code> translates a Decision Card's <code>conditions[]</code> into a PolicyBundle for evaluation. Gating real requests requires a separately deployed, trusted policy path.</p>
           </article>
           <article class="card tooling-card">
             <h3><a href="https://github.com/mizcausevic-dev/incident-correlation-rs" target="_blank" rel="noreferrer">incident-correlation-rs ↗</a></h3>
@@ -220,15 +220,15 @@
           </article>
           <article class="card tooling-card">
             <h3><a href="https://github.com/mizcausevic-dev/mcp-decision-intelligence" target="_blank" rel="noreferrer">mcp-decision-intelligence ↗</a></h3>
-            <p><strong>Python · MCP server.</strong> Four tools — <code>validate_decision_card</code>, <code>preview_policy_bundle</code>, <code>plan_incident_remediation</code>, <code>check_contract_compatibility</code>. Read-only deterministic preview of what the rest of the stack would do, no LLM-in-the-loop reasoning.</p>
+            <p><strong>TypeScript · MCP server.</strong> Four tools — <code>validate_decision_card</code>, <code>preview_policy_bundle</code>, <code>plan_incident_remediation</code>, <code>check_contract_compatibility</code>. Read-only deterministic preview of the corresponding service behavior.</p>
           </article>
           <article class="card tooling-card">
             <h3><a href="https://validator.kineticgain.com/" target="_blank" rel="noreferrer">validator.kineticgain.com ↗</a></h3>
-            <p><strong>Hosted validator.</strong> Paste any Decision Card JSON, get inline validation against the schema. Auto-detects the spec via the <code>decision_card_version</code> field — same pattern as the other ten Suite specs.</p>
+            <p><strong>Hosted validator.</strong> Paste a Decision Card JSON document for inline schema validation. It detects the document via the <code>decision_card_version</code> field.</p>
           </article>
           <article class="card tooling-card">
             <h3><a href="https://github.com/mizcausevic-dev/mcp-kinetic-gain" target="_blank" rel="noreferrer">mcp-kinetic-gain ↗</a></h3>
-            <p><strong>Unified MCP server.</strong> Exposes the Decision Card alongside all 10 other Suite specs as MCP tools. Headline relevant tool: <code>decision_card_validate</code> enforces the full conditional ruleset (e.g. "if status is approved-with-conditions, conditions[] MUST be non-empty").</p>
+            <p><strong>Unified MCP server v0.10.0.</strong> Offers 75 tools for all twelve Suite specs, DefenseTech checks, and implementation previews. <code>decision_card_validate</code> checks conditional document rules, including the non-empty <code>conditions[]</code> requirement for approved-with-conditions cards; it does not authorize a live tool call.</p>
           </article>
         </div>
       </div>
@@ -236,8 +236,8 @@
 
     <section class="cta-strip">
       <div class="cta-strip-inner">
-        <h2>The eleventh spec closes the loop.</h2>
-        <p>Vendors declare. Buyers decide. The graph is complete.</p>
+        <h2>Put the buyer's review on record.</h2>
+        <p>Vendor declarations and the review outcome can be checked together.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/mizcausevic-dev/ai-procurement-decision-spec" target="_blank" rel="noreferrer">Read the spec on GitHub</a>
           <a class="btn btn-secondary" href="https://suite.kineticgain.com/" target="_blank" rel="noreferrer">See the full Suite</a>
@@ -264,7 +264,7 @@
     <div class="foot-inner">
       <div class="foot-col">
         <strong>AI Procurement Decision Card</strong>
-        <p>Spec #11 of the Kinetic Gain Protocol Suite. v0.1 draft.<br />MIT-licensed specification; reference implementations under AGPL-3.0.</p>
+        <p>One of twelve Kinetic Gain Protocol Suite specs. v0.1 draft.<br />MIT-licensed specification; reference implementations carry their own licenses.</p>
       </div>
       <div class="foot-col">
         <strong>Suite</strong>
