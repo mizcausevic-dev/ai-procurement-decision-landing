@@ -62,7 +62,7 @@
         </div>
         <ul class="hero-bullets">
           <li><span class="dot dot-indigo"></span> <strong>Cites vendor docs by URL + content_hash</strong> — drift is detectable, decisions are auditable</li>
-          <li><span class="dot dot-indigo"></span> <strong>Seven terminal statuses</strong> — approved · approved-with-conditions · rejected · rejected-with-remediation · pending · withdrawn · expired</li>
+          <li><span class="dot dot-indigo"></span> <strong>Seven decision statuses</strong> — approved · approved-with-conditions · rejected · rejected-with-remediation · pending · withdrawn · expired</li>
           <li><span class="dot dot-indigo"></span> Served at <code>/.well-known/decisions/&lt;decision_id&gt;.json</code></li>
         </ul>
       </div>
@@ -112,7 +112,7 @@
       <div class="block-inner">
         <h2>Document structure</h2>
         <p class="prose">
-          Six fields are required: <code>decision_card_version</code>, <code>decision_id</code>,
+          Seven fields are required: <code>decision_card_version</code>, <code>decision_id</code>,
           <code>issued_at</code>, <code>buyer</code>, <code>decision</code>, <code>subject</code>, and
           <code>rationale</code>. Everything else is optional but recommended.
         </p>
