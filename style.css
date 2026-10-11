@@ -39,6 +39,11 @@ html, body {
 
 a { color: var(--indigo-700); text-decoration: none; }
 a:hover { color: var(--indigo-800); text-decoration: underline; }
+a:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 
 code {
   font-family: var(--font-mono);
