@@ -102,7 +102,7 @@
           </article>
           <article class="card">
             <h3>Signatures optional, expected</h3>
-            <p>For non-repudiation, decisions carry ed25519 signatures over the canonical-JSON hash — same convention as <a href="https://github.com/mizcausevic-dev/hash-attestation-rs" target="_blank" rel="noreferrer">hash-attestation-rs</a>. "This decision actually came from this buyer."</p>
+            <p>A verified Ed25519 signature over the canonical-JSON hash links a card to its signing key. It identifies the buyer only when the verifier also trusts an independent binding between that key and the named buyer. The signing convention follows <a href="https://github.com/mizcausevic-dev/hash-attestation-rs" target="_blank" rel="noreferrer">hash-attestation-rs</a>.</p>
           </article>
         </div>
       </div>
@@ -131,7 +131,7 @@
   "history":        [ ... audit trail of state transitions ... ],
   "appeals":        { ... appeal deadline + process URL ... },
   "publication":    { ... publication URL + visibility ... },
-  "signatures":     [ ... non-repudiation signatures ... ],
+  "signatures":     [ ... optional Ed25519 signatures ... ],
   "withdrawal":     { ... only present if status=withdrawn ... }
 }</code></pre>
 
